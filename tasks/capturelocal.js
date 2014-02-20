@@ -111,7 +111,7 @@ module.exports = function(grunt) {
 			/* stupid phantomjs outputs this on stdout... */
 			if (/Couldn\'t load url/.test(data)) {
 				grunt.log.warn('Couldn\'t load url');
-			} else if (/ReferenceError/.test(data)) {
+			} else if (/PAGE ERROR/.test(data)) {
 				phantomErrors.push(chalk.red(data));
 			} else if (/done/.test(data)) {
 				phantomBar.tick();
