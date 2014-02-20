@@ -1,4 +1,4 @@
-/*global format */
+  /*global format */
 /*
  * grunt-capturelocal
  * https://github.com/alexmeah/grunt-capturelocal
@@ -10,7 +10,7 @@
  'use strict';
 
  module.exports = function(grunt) {
-
+  require('time-grunt')(grunt);
   // Project configuration.
   grunt.initConfig({
     jshint: {
@@ -38,6 +38,17 @@
         files: [{
           expand: true,
           cwd: './test/fixtures',
+          src: ['**/*.html'],
+          dest: './test/tmp'
+        }],
+      },
+      crazy: {
+        options: {
+          thumb: true
+        },
+        files: [{
+          expand: true,
+          cwd: './test/crazy',
           src: ['**/*.html'],
           dest: './test/tmp'
         }],

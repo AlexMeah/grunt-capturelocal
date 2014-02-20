@@ -27,6 +27,7 @@ module.exports = function(grunt) {
 		var statik = require('node-static');
 		var http = require('http');
 
+		/* Make sure we have files to work with */
 		if (!/\.html/.test(this.files[0].dest)) {
 			grunt.log.warn('No files matched');
 			done();
@@ -38,6 +39,7 @@ module.exports = function(grunt) {
 			deleteFull: false,
 			thumb: true,
 			thumbSize: '200',
+			/* We use functions to set paths now this makes it more flexible */
 			name: function(file, format) {
 				var a = file.dest.replace(/\.html/, '.' + format);
 				return a;
@@ -50,10 +52,12 @@ module.exports = function(grunt) {
 			delay: 0
 		});
 
+		/* Remap dest to option.name */
 		_.forEach(this.files, function (file) {
 			file.dest = options.name(file, options.format);
 		});
 
+		/* Store this for later*/
 		var files = this.files;
 
 		grunt.log.writeln('Creating server at http://localhost:1339/ for directory', './');
@@ -95,7 +99,6 @@ module.exports = function(grunt) {
 
 		var phantomFiles = JSON.stringify(this.files);
 		var phantomOptions = JSON.stringify(options);
-
 		var phantomBar = new ProgressBar('[:bar] :eta', { total: files.length, width: 25 });
 		var phantomErrors = [];
 		var phantom = spawn(phantomjsPath, [path.join(__dirname, '../lib/capture.js'), phantomOptions, phantomFiles]);
