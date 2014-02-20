@@ -20,8 +20,10 @@ module.exports = function(grunt) {
 		var phantomjsPath = require('phantomjs').path;
 		var spawn = require('child_process').spawn;
 		var async = require('async');
+		var ProgressBar = require('progress');
 		var cpus = require('os').cpus().length;
 		var done = this.async();
+		var chalk = require('chalk');
 		var statik = require('node-static');
 		var http = require('http');
 
@@ -55,6 +57,7 @@ module.exports = function(grunt) {
 		var files = this.files;
 
 		grunt.log.writeln('Creating server at http://localhost:1337/ for directory', path.dirname(files[0].src[0]));
+		grunt.log.writeln(chalk.blue('Starting', files.length, 'screenshots...\n'));
 		var fileServer = new statik.Server(path.dirname(files[0].src[0]));
 
 		var server = require('http').createServer(function (request, response) {
@@ -71,6 +74,7 @@ module.exports = function(grunt) {
 			}).resume();
 		}).listen(1337);
 
+		var thumbBar = new ProgressBar('[:bar] :eta', { total: files.length, width: 25 });
 		function doThumb(file, callback) {
 			im.resize({
 				srcPath: file.dest,
@@ -83,7 +87,7 @@ module.exports = function(grunt) {
 				if (options.deleteFull) {
 					grunt.file.delete(file.dest);
 				}
-				grunt.log.writeln('Thumb created for,', file.dest);
+				thumbBar.tick();
 				callback();
 			});
 		}
@@ -91,6 +95,8 @@ module.exports = function(grunt) {
 		var phantomFiles = JSON.stringify(this.files);
 		var phantomOptions = JSON.stringify(options);
 
+		var phantomBar = new ProgressBar('[:bar] :eta', { total: files.length, width: 25 });
+		var phantomErrors = [];
 		var phantom = spawn(phantomjsPath, [path.join(__dirname, '../lib/capture.js'), phantomOptions, phantomFiles]);
 
 		process.stderr.setMaxListeners(0);
@@ -98,30 +104,36 @@ module.exports = function(grunt) {
 			/* ignore phantomjs noise */
 			if (/ phantomjs\[/.test(data)) {
 				return;
-			} else {
-				grunt.log.writeln('screenshots completed');
 			}
 		});
 
 		phantom.stdout.on('data', function (data) {
 			/* stupid phantomjs outputs this on stdout... */
 			if (/Couldn\'t load url/.test(data)) {
-				grunt.fail.warn('Couldn\'t load url');
+				grunt.log.warn('Couldn\'t load url');
+			} else if (/ReferenceError/.test(data)) {
+				phantomErrors.push(chalk.red(data));
+			} else if (/done/.test(data)) {
+				phantomBar.tick();
 			} else {
 				grunt.log.writeln(data);
 			}
 		});
 
 		phantom.on('close', function() {
-			grunt.log.ok('screenshots done.');
+			grunt.log.ok('\nScreenshots done.');
+			if (phantomErrors.length) {
+				grunt.log.writeln(chalk.underline('\nErrors were found in the following pages:'));
+				grunt.log.write(phantomErrors.join('\n'));
+			}
 			if (options.thumb) {
-				grunt.log.ok('Doing', files.length, 'thumbs.');
+				grunt.log.writeln(chalk.blue('\nStarting', files.length, 'thumbs...\n'));
 				async.eachLimit(files, cpus, doThumb, function (err) {
 					if (err) {
 						grunt.log.warn(err);
 					}
 
-					grunt.log.writeln('Thumbs done.');
+					grunt.log.ok('\nThumbs done.');
 					server.close();
 					done();
 				});
