@@ -22,6 +22,8 @@ module.exports = function(grunt) {
 		var async = require('async');
 		var cpus = require('os').cpus().length;
 		var done = this.async();
+		var statik = require('node-static');
+		var http = require('http');
 
 		if (!/\.html/.test(this.files[0].dest)) {
 			grunt.log.warn('No files matched');
@@ -51,6 +53,23 @@ module.exports = function(grunt) {
 		});
 
 		var files = this.files;
+
+		grunt.log.writeln('Creating server at http://localhost:1337/ for directory', path.dirname(files[0].src[0]));
+		var fileServer = new statik.Server(path.dirname(files[0].src[0]));
+
+		var server = require('http').createServer(function (request, response) {
+			request.addListener('end', function () {
+				fileServer.serve(request, response, function (err, result) {
+			if (err) { // There was an error serving the file
+				grunt.log.warn('Error serving ' + request.url + ' - ' + err.message);
+
+				// Respond to the client
+				response.writeHead(err.status, err.headers);
+				response.end();
+			}
+		});
+			}).resume();
+		}).listen(1337);
 
 		function doThumb(file, callback) {
 			im.resize({
@@ -103,6 +122,7 @@ module.exports = function(grunt) {
 					}
 
 					grunt.log.writeln('Thumbs done.');
+					server.close();
 					done();
 				});
 			} else {
