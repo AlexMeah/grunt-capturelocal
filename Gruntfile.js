@@ -62,6 +62,7 @@
       leap: {
         options: {
           thumb: true,
+          thumbSize: 400,
           name: function(file, format) {
             var a = file.dest.replace(/\.html/, '-leap.' + format);
             return a;
