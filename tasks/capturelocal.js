@@ -60,17 +60,18 @@ module.exports = function(grunt) {
 		grunt.log.writeln(chalk.blue('Starting', files.length, 'screenshots...\n'));
 		var fileServer = new statik.Server(path.dirname(files[0].src[0]));
 
+		var filesMissing = [];
 		var server = require('http').createServer(function (request, response) {
 			request.addListener('end', function () {
 				fileServer.serve(request, response, function (err, result) {
-			if (err) { // There was an error serving the file
-				grunt.log.warn('Error serving ' + request.url + ' - ' + err.message);
+					if (err) { // There was an error serving the file
+						filesMissing.push(chalk.red(request.url + ' was ' + err.message + ' called from file ' + path.basename(request.headers.referer)));
 
-				// Respond to the client
-				response.writeHead(err.status, err.headers);
-				response.end();
-			}
-		});
+						// Respond to the client
+						response.writeHead(err.status, err.headers);
+						response.end();
+					}
+				});
 			}).resume();
 		}).listen(1337);
 
@@ -126,8 +127,12 @@ module.exports = function(grunt) {
 				grunt.log.writeln(chalk.underline('\nErrors were found in the following pages:'));
 				grunt.log.write(phantomErrors.join('\n'));
 			}
+			if (filesMissing.length) {
+				grunt.log.writeln(chalk.underline('\nSome files are missing:'));
+				grunt.log.write(filesMissing.join('\n'));
+			}
 			if (options.thumb) {
-				grunt.log.writeln(chalk.blue('\nStarting', files.length, 'thumbs...\n'));
+				grunt.log.writeln(chalk.blue('\n\nStarting', files.length, 'thumbs...\n'));
 				async.eachLimit(files, cpus, doThumb, function (err) {
 					if (err) {
 						grunt.log.warn(err);
