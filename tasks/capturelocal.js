@@ -56,9 +56,9 @@ module.exports = function(grunt) {
 
 		var files = this.files;
 
-		grunt.log.writeln('Creating server at http://localhost:1337/ for directory', path.dirname(files[0].src[0]));
+		grunt.log.writeln('Creating server at http://localhost:1339/ for directory', './');
 		grunt.log.writeln(chalk.blue('Starting', files.length, 'screenshots...\n'));
-		var fileServer = new statik.Server(path.dirname(files[0].src[0]));
+		var fileServer = new statik.Server('./');
 
 		var filesMissing = [];
 		var server = require('http').createServer(function (request, response) {
