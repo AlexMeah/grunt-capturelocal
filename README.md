@@ -37,19 +37,28 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
-
-A string value that is used to do something with whatever.
-
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
+```js
+var options = this.options({
+  viewport: '1024x768',
+  deleteFull: false,
+  thumb: true,
+  thumbSize: '200',
+  name: function(file, format) {
+    var a = file.dest.replace(/\.html/, '.' + format);
+    return a;
+  },
+  thumbName: function(file, format) {
+    var a = file.dest.replace('.' + format, '-thumb.' + format);
+    return a;
+  },
+  format: 'png',
+  delay: 0
+});
+```
 
 ### Usage Examples
+
+**You must use expanded mapping as shown below**
 
 #### Default Options
 In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
@@ -58,9 +67,12 @@ In this example, the default options are used to do something with whatever. So 
 grunt.initConfig({
   capturelocal: {
     options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
+    files: [{
+      expand: true,
+      cwd: './test/fixtures',
+      src: ['**/*.html'],
+      dest: './test/tmp'
+    }],
   },
 });
 ```
@@ -72,12 +84,20 @@ In this example, custom options are used to do something else with whatever else
 grunt.initConfig({
   capturelocal: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      thumb: true,
+      name: function(file, format) {
+        return file.dest.replace(/\.html/, '-full.' + format);
+      },
+      thumbName: function(file, format) {
+        return file.dest.replace('-full.' + format, '-thumb.' + format);
+      }
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
+    files: [{
+      expand: true,
+      cwd: './test/fixtures',
+      src: ['**/*.html'],
+      dest: './test/tmp'
+    }],
   },
 });
 ```
