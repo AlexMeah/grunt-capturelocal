@@ -42,17 +42,6 @@
           dest: './test/tmp'
         }],
       },
-      crazy: {
-        options: {
-          thumb: true
-        },
-        files: [{
-          expand: true,
-          cwd: './test/crazy',
-          src: ['**/*.html'],
-          dest: './test/tmp'
-        }],
-      },
       irep: {
         options: {
           thumb: true,

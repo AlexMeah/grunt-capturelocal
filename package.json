@@ -1,7 +1,7 @@
 {
   "name": "grunt-capturelocal",
   "description": "Batch screenshot local files using phantomjs and resize",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "homepage": "https://github.com/alexmeah/grunt-capturelocal",
   "author": "Alex Meah <alexmeahdotcom@gmail.com>",
   "repository": {
@@ -27,7 +27,8 @@
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt": "~0.4.2"
+    "grunt": "~0.4.2",
+    "time-grunt": "~0.2.10"
   },
   "peerDependencies": {
     "grunt": "~0.4.2"

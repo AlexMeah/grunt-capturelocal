@@ -28,54 +28,49 @@ exports.capturelocal = {
     done();
   },
   default_options: function(test) {
-    test.expect(6);
+    test.expect(3);
 
-    var Z4Gbs_Actual = grunt.file.read('test/tmp/Z4Gbs.png');
-    var Z4Gbs_Expected = grunt.file.read('test/expected/Z4Gbs.png');
-    test.equal(Z4Gbs_Actual, Z4Gbs_Expected, 'Should match');
+    /*
+    * Check that files are created
+    */
 
-    var Z4Gbs_thumb_Actual = grunt.file.read('test/tmp/Z4Gbs-thumb.png');
-    var Z4Gbs_thumb_Expected = grunt.file.read('test/expected/Z4Gbs-thumb.png');
-    test.equal(Z4Gbs_thumb_Actual, Z4Gbs_thumb_Expected, 'Should match');
+    var zX79B = grunt.file.exists('test/tmp/zX79B.png');
+    test.ok(zX79B, 'zX79B should exist');
 
-    var z19qY_Actual = grunt.file.read('test/tmp/z19qY.png');
-    var z19qY_Expected = grunt.file.read('test/expected/z19qY.png');
-    test.equal(z19qY_Actual, z19qY_Expected, 'Should match');
+    var zyjkc = grunt.file.exists('test/tmp/zyjkc.png');
+    test.ok(zyjkc, 'zyjkc should exist');
 
-    var z19qY_thumb_Actual = grunt.file.read('test/tmp/z19qY-thumb.png');
-    var z19qY_thumb_Expected = grunt.file.read('test/expected/z19qY-thumb.png');
-    test.equal(z19qY_thumb_Actual, z19qY_thumb_Expected, 'Should match');
+    /*
+    * Check that files are different
+    */
 
-    var ZQkLA_Actual = grunt.file.read('test/tmp/ZQkLA.png');
-    var ZQkLA_Expected = grunt.file.read('test/expected/ZQkLA.png');
-    test.equal(ZQkLA_Actual, ZQkLA_Expected, 'Should match');
-
-    var ZQkLA_thumb_Actual = grunt.file.read('test/tmp/ZQkLA-thumb.png');
-    var ZQkLA_thumb_Expected = grunt.file.read('test/expected/ZQkLA-thumb.png');
-    test.equal(ZQkLA_thumb_Actual, ZQkLA_thumb_Expected, 'Should match');
+    var zX79B_val = grunt.file.read('test/tmp/zX79B.png');
+    var zyjkc_val = grunt.file.read('test/tmp/zyjkc.png');
+    test.notEqual(zX79B_val, zyjkc_val, 'Files should not be the same');
 
     test.done();
   },
   irep: function(test) {
-    test.expect(2);
+    test.expect(3);
 
-    var Z4Gbs_Actual = grunt.file.read('test/tmp/Z4Gbs-full.png');
-    var Z4Gbs_Expected = grunt.file.read('test/expected/Z4Gbs-full.png');
-    test.equal(Z4Gbs_Actual, Z4Gbs_Expected, 'Should match');
+    /*
+    * Check that files are created with the correct renaming
+    */
 
-    var Z4Gbs_thumb_Actual = grunt.file.read('test/tmp/Z4Gbs-thumb.png');
-    var Z4Gbs_thumb_Expected = grunt.file.read('test/expected/Z4Gbs-thumb.png');
-    test.equal(Z4Gbs_thumb_Actual, Z4Gbs_thumb_Expected, 'Should match');
+    var zX79B = grunt.file.exists('test/tmp/zX79B-full.png');
+    test.ok(zX79B, 'zX79B should exist');
+
+    var zyjkc = grunt.file.exists('test/tmp/zyjkc-thumb.png');
+    test.ok(zyjkc, 'zyjkc-thumb should exist');
+
+    /*
+    * Check that files are different
+    */
+
+    var zX79B_val = grunt.file.read('test/tmp/zX79B-full.png');
+    var zyjkc_val = grunt.file.read('test/tmp/zyjkc-full.png');
+    test.notEqual(zX79B_val, zyjkc_val, 'Files should not be the same');
 
     test.done();
-  },
-  leap: function(test) {
-    test.expect(1);
-
-    var Z4Gbs_Actual = grunt.file.read('test/leap/Z4Gbs.png');
-    var Z4Gbs_Expected = grunt.file.read('test/expected/leap/Z4Gbs.png');
-    test.equal(Z4Gbs_Actual, Z4Gbs_Expected, 'Should match');
-
-    test.done();
-  },
+  }
 };
