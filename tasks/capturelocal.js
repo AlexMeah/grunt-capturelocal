@@ -146,6 +146,7 @@ module.exports = function(grunt) {
 					done();
 				});
 			} else {
+				server.close();
 				done();
 			}
 		});
