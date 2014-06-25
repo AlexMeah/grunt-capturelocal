@@ -1,5 +1,7 @@
 # grunt-capturelocal
 
+[![Build Status](http://ci.alexmeah.com/github.com/AlexMeah/grunt-capturelocal/status.svg?branch=master)](http://ci.alexmeah.com/github.com/AlexMeah/grunt-capturelocal)
+
 > Batch screenshot local files using phantomjs and resize
 
 ## Getting Started
