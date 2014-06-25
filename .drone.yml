@@ -1,7 +1,7 @@
 image: node0.10
 script:
   - npm i
-  - npm i grunt-cli
+  - npm install -g grunt-cli
   - grunt test
 notify:
   email:
