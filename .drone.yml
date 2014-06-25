@@ -1,0 +1,9 @@
+image: node0.10
+script:
+  - npm i
+  - npm i grunt-cli
+  - grunt test
+notify:
+  email:
+    recipients:
+      - alexmeah@gmail.com
