@@ -1,7 +1,5 @@
 # grunt-capturelocal
 
-[ ![Codeship Status for AlexMeah/grunt-capturelocal](https://www.codeship.io/projects/8b4e0d50-de71-0131-7077-027ef768f52f/status)](https://www.codeship.io/projects/24808)
-
 > Batch screenshot local files using phantomjs and resize
 
 ## Getting Started
