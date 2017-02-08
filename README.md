@@ -1,5 +1,7 @@
 # grunt-capturelocal
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/AlexMeah/grunt-capturelocal.svg)](https://greenkeeper.io/)
+
 [![Build Status](http://ci.alexmeah.com/github.com/AlexMeah/grunt-capturelocal/status.svg?branch=master)](http://ci.alexmeah.com/github.com/AlexMeah/grunt-capturelocal)
 
 > Batch screenshot local files using phantomjs and resize
